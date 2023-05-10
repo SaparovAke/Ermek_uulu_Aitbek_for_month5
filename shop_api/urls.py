@@ -25,13 +25,13 @@ from product.views import Review_list_api_view, Review_detail_api_view, rating_r
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/products/', product_list_api_view),
-    path('api/v1/product/<int:id>/', product_detail_api_view),
+    path('api/v1/products/<int:id>/', product_detail_api_view),
 
     path('api/v1/categories/', Category_list_api_view),
     path('api/v1/categories/<int:id>/', Category_detail_api_view),
 
     path('api/v1/reviews/', Review_list_api_view),
-    path('api/v1/review/<int:id>/', Review_detail_api_view),
+    path('api/v1/reviews/<int:id>/', Review_detail_api_view),
 
-    path('/api/v1/products/reviews/', rating_review_api_view)
+    path('api/v1/products/reviews/', rating_review_api_view)
  ]

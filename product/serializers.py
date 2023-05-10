@@ -9,11 +9,11 @@ class ReviewSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = 'id name'.split()
+        fields = 'name'.split()
 
 class ProductSerializer(serializers.ModelSerializer):
     products_reviews = ReviewSerializer(many=True)
-    products_category = CategorySerializer(many=True)
+    products_category = CategorySerializer()
     class Meta:
         model = Product
-        fields = 'id title description products_category products_reviews price'.split()
+        fields = 'id title description price products_category products_reviews'.split()

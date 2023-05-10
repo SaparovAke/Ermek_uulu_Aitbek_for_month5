@@ -13,7 +13,7 @@ class Category(models.Model):
 class Product(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,
+    products_category = models.ForeignKey(Category, on_delete=models.CASCADE,null=True,
                                  blank=True, related_name='products_category')
     price = models.IntegerField()
     def __str__(self):
