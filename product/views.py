@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from product.serializers import ProductSerializer, ReviewSerializer, CategorySerializer
 from product.models import Product, Review, Category
+from django.db.models import Avg, Count
 
 
 @api_view(['GET'])
@@ -39,6 +40,7 @@ def Review_detail_api_view(request, id):
 
     return Response(data=data_dict)
 
+
 @api_view(['GET'])
 def Review_list_api_view(request):
     reviews = Review.objects.all()
@@ -46,12 +48,22 @@ def Review_list_api_view(request):
 
     return Response(data=data_dict)
 
+
+@api_view(['GET'])
+def rating_review_api_view(request):
+    review = Review.objects.all()
+    rating = Review.objects.aggregate(avg=Avg('stars'))
+    data_dict = ReviewSerializer(review, many=True).data
+    return Response(data=[data_dict, rating])
+
 @api_view(['GET'])
 def Category_list_api_view(request):
     categorys = Category.objects.all()
+    kolichestvo = Category.objects.aggregate(count=Count('products_category'))
     data_dict = CategorySerializer(categorys, many=True).data
 
-    return Response(data=data_dict)
+    return Response(data=[data_dict, kolichestvo])
+
 
 @api_view(['GET'])
 def Category_detail_api_view(request, id):
@@ -59,7 +71,7 @@ def Category_detail_api_view(request, id):
         category = Category.objects.get(id=id)
     except Category.DoesNotExist:
         return Response(data={'error': 'category not found'},
-                              status=status.HTTP_404_NOT_FOUND)
+                        status=status.HTTP_404_NOT_FOUND)
 
     data_dict = CategorySerializer(category, many=False).data
 
